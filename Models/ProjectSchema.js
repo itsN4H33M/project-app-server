@@ -25,6 +25,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
 // creating a model

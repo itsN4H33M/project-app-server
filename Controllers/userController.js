@@ -47,10 +47,7 @@ exports.login = async (req, res) => {
   try {
     if (existingUser) {
       // generating token for authorisation
-      const token = jwt.sign(
-        { userId: existingUser._id },
-        "supersecretkey"
-      );
+      const token = jwt.sign({ userId: existingUser._id }, "supersecretkey");
       res.status(200).json({
         existingUser,
         token,
@@ -60,5 +57,24 @@ exports.login = async (req, res) => {
     }
   } catch {
     res.status(401).json(`Login API failed, Error: ${err}`);
+  }
+};
+
+// edit user
+exports.editUser = async (req, res) => {
+  const userId = req.payload;
+  const { username, email, password, github, linkedin, profile } = req.body;
+  const uploadImage = req.file ? req.file.filename : profile;
+
+  try {
+    const updateUser = await users.findByIdAndUpdate(
+      { _id: userId },
+      { username, email, password, github, linkedin, profile: uploadImage },
+      { new: true }
+    );
+    await updateUser.save();
+    res.status(200).json(updateUser);
+  } catch (err) {
+    res.status(401).json(err);
   }
 };

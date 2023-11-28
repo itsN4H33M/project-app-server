@@ -16,6 +16,9 @@ pfServer.use(express.json());
 
 pfServer.use(router);
 
+// to make the images visible in front end
+pfServer.use("/uploads", express.static("./uploads"));
+
 // Assign a port no. for server or available port
 const PORT = 4000 || process.env.PORT;
 
